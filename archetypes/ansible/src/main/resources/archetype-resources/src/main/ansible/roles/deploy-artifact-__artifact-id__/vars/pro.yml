@@ -1,0 +1,22 @@
+---
+
+#[[#########################################################
+# VARIABLES QUE SE APLICAN EN EL ENTORNO PRODUCTION
+#########################################################]]#
+
+# VARIABLES DEPENDIENTES DEL ENTORNO
+host: host_pro
+port: 3306
+bdd: proproduction
+user: user_pro
+pass: pass_pro
+
+# DIRECTORIOS DE DESPLIEGUE
+deployment_directories:
+  - /tmp/pro-1
+  - /tmp/pro-2
+
+# DIRECTORIOS DE CONFIGURACION
+configuration_directories:
+  - /tmp/pro-1
+  - /tmp/pro-2

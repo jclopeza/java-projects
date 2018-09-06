@@ -1,0 +1,22 @@
+---
+
+#[[#########################################################
+# VARIABLES QUE SE APLICAN EN EL ENTORNO PREPRODUCTION
+#########################################################]]#
+
+# VARIABLES DEPENDIENTES DEL ENTORNO
+host: host_pre
+port: 3306
+bdd: preproduction
+user: user_pre
+pass: pass_pre
+
+# DIRECTORIOS DE DESPLIEGUE
+deployment_directories:
+  - /tmp/pre-1
+  - /tmp/pre-2
+
+# DIRECTORIOS DE CONFIGURACION
+configuration_directories:
+  - /tmp/pre-1
+  - /tmp/pre-2

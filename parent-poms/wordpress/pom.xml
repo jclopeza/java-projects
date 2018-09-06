@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>vocento.devops.parent</groupId>
+	<artifactId>wordpress</artifactId>
+	<version>1.6.0</version>
+	<packaging>pom</packaging>
+	<name>Parent pom - wordpress</name>
+
+	<parent>
+		<groupId>vocento.devops.parent</groupId>
+		<artifactId>vocento</artifactId>
+		<version>LATEST</version>
+	</parent>
+
+	<properties>
+		<sonar.projectBaseDir>..</sonar.projectBaseDir>
+		<sonar.sources>../wp-content/plugins,../wp-content/themes</sonar.sources>
+		<sonar.language>php</sonar.language>
+	</properties>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>maven2-repository.dev.java.net</id>
+			<url>http://download.java.net/maven/2</url>
+			<layout>default</layout>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+
+				<plugin>
+					<groupId>org.sonarsource.scanner.maven</groupId>
+					<artifactId>sonar-maven-plugin</artifactId>
+					<version>3.2</version>
+					<executions>
+						<execution>
+							<id>sonar-analysis</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sonar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>vocento.devops.plugins</groupId>
+					<artifactId>sonar-break-maven-plugin</artifactId>
+					<version>${sonar.break.maven.plugin.version}</version>
+					<configuration>
+						<sonarServer>${sonar.host.url}</sonarServer>
+					</configuration>
+					<executions>
+						<execution>
+							<id>sonar-break</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sonar-break</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.jvnet.mcvp</groupId>
+					<artifactId>maven-css-validator-plugin</artifactId>
+					<version>1.0.0</version>
+					<executions>
+						<execution>
+							<phase>validate</phase>
+							<goals>
+								<goal>validate</goal>
+							</goals>
+							<configuration>
+								<!-- CSS Profile (css21 is default) -->
+								<profile>css21</profile>
+								<!-- Included CSS files (src/main/webapp/**/*.css is default) -->
+								<includes>
+									<include>**/*.css</include>
+								</includes>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.6</version>
+					<configuration>
+						<appendAssemblyId>false</appendAssemblyId>
+						<descriptors>
+							<descriptor>src/main/assembly/zip.xml</descriptor>
+						</descriptors>
+					</configuration>
+					<executions>
+						<execution>
+							<id>make-assembly</id>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>

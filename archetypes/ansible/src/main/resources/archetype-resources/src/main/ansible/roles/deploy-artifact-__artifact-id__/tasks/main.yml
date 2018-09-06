@@ -1,0 +1,34 @@
+---
+
+- name: Obtenemos la URL y version del componente a desplegar
+  set_fact:
+    component_url: "{{ hostvars['localhost']['artifacts'].json['vocento.${technology-type}:${artifact-id}']['url'] }}"
+    component_version: "{{ hostvars['localhost']['artifacts'].json['vocento.${technology-type}:${artifact-id}']['version'] }}"
+    
+- name: Cargamos las variables del entorno {{ entorno }}
+  include_vars: "{{ entorno }}.yml"
+
+- name: Limpiamos los directorios de destino para asegurar un despliegue limpio
+  file:
+    path: "{{ item }}/{{ component_version }}"
+    state: absent
+  with_items: "{{ deployment_directories }}"
+
+- name: Creamos los directorios en remoto antes de ubicar los artefactos
+  file:
+    path: "{{ item }}/{{ component_version }}"
+    state: directory
+  with_items: "{{ deployment_directories }}"
+
+- name: Descomprimimos el contenido del zip en remoto
+  unarchive:
+    src: "{{ component_url }}"
+    dest: "{{ item }}/{{ component_version }}"
+    remote_src: yes
+  with_items: "{{ deployment_directories }}"
+
+- name: Ficheros de configuracion
+  template:
+    src: config.properties.j2
+    dest: "{{ item }}/config.properties"
+  with_items: "{{ configuration_directories }}"

@@ -1,0 +1,22 @@
+---
+
+#[[#########################################################
+# VARIABLES QUE SE APLICAN EN EL ENTORNO DEVELOPMENT
+#########################################################]]#
+
+# VARIABLES DEPENDIENTES DEL ENTORNO
+host: host_test
+port: 3306
+bdd: test
+user: user_test
+pass: pass_test
+
+# DIRECTORIOS DE DESPLIEGUE
+deployment_directories:
+  - /tmp/test-1
+  - /tmp/test-2
+
+# DIRECTORIOS DE CONFIGURACION
+configuration_directories:
+  - /tmp/test-1
+  - /tmp/test-2

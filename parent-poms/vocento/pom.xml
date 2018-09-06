@@ -1,0 +1,36 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>vocento.devops.parent</groupId>
+	<artifactId>vocento</artifactId>
+	<version>1.2.0</version>
+	<packaging>pom</packaging>
+	<name>Parent pom - vocento</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<nexus.host.url>https://nexus.srv.vocento.in/repository/maven-releases/</nexus.host.url>
+		<!-- <nexus.host.url>http://localhost:8081/nexus/content/repositories/releases/</nexus.host.url> -->
+		<sonar.host.url>https://sonar.srv.vocento.in</sonar.host.url>
+		<sonar.break.maven.plugin.version>2.1.0</sonar.break.maven.plugin.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>vocento.devops.plugins</groupId>
+				<artifactId>sonar-break-maven-plugin</artifactId>
+				<version>${sonar.break.maven.plugin.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<distributionManagement>
+		<repository>
+			<id>nexus.vocento</id>
+			<name>Nexus de Vocento</name>
+			<url>${nexus.host.url}</url>
+		</repository>
+	</distributionManagement>
+
+</project>

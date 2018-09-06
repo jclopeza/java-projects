@@ -1,0 +1,123 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>vocento.devops.parent</groupId>
+	<artifactId>nginx-phpfpm</artifactId>
+	<version>2.3.0</version>
+	<packaging>pom</packaging>
+	<name>Parent pom - nginx-phpfpm</name>
+
+	<parent>
+		<groupId>vocento.devops.parent</groupId>
+		<artifactId>vocento</artifactId>
+		<version>LATEST</version>
+	</parent>
+
+	<properties>
+		<sonar.projectBaseDir>..</sonar.projectBaseDir>
+		<sonar.sources>../src,../tests</sonar.sources>
+		<sonar.language>php</sonar.language>
+        <base-nginx-phpfpm>docker-repo.srv.vocento.in/vocbase/base-nginx-phpfpm:latest</base-nginx-phpfpm>
+	</properties>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+
+				<plugin>
+					<groupId>org.sonarsource.scanner.maven</groupId>
+					<artifactId>sonar-maven-plugin</artifactId>
+					<version>3.2</version>
+					<executions>
+						<execution>
+							<id>sonar-analysis</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sonar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>vocento.devops.plugins</groupId>
+					<artifactId>sonar-break-maven-plugin</artifactId>
+					<version>${sonar.break.maven.plugin.version}</version>
+					<configuration>
+						<sonarServer>${sonar.host.url}</sonarServer>
+					</configuration>
+					<executions>
+						<execution>
+							<id>sonar-break</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sonar-break</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.5.0</version>
+					<!-- Utilizamos la version 1.5.0 porque la 1.6.0 no admite guion como parametro -->
+					<executions>
+						<execution>
+							<id>s2i-build</id>
+							<phase>install</phase>
+							<goals>
+								<goal>exec</goal>
+							</goals>
+							<configuration>
+								<executable>/usr/local/bin/s2i</executable>
+								<workingDirectory>..</workingDirectory>
+								<arguments>
+									<argument>build</argument>
+									<argument>-p</argument>
+									<argument>always</argument>
+									<argument>.</argument>
+									<argument>${base-nginx-phpfpm}</argument>
+									<argument>docker-repo.srv.vocento.in/nginx-phpfpm/${project.artifactId}:${project.version}</argument>
+								</arguments>
+							</configuration>
+						</execution>
+						<execution>
+							<id>docker-push</id>
+							<phase>deploy</phase>
+							<goals>
+								<goal>exec</goal>
+							</goals>
+							<configuration>
+								<executable>docker</executable>
+								<workingDirectory>..</workingDirectory>
+								<arguments>
+									<argument>push</argument>
+									<argument>docker-repo.srv.vocento.in/nginx-phpfpm/${project.artifactId}:${project.version}</argument>
+								</arguments>
+							</configuration>
+						</execution>
+						<execution>
+							<id>docker-rmi</id>
+							<phase>deploy</phase>
+							<goals>
+								<goal>exec</goal>
+							</goals>
+							<configuration>
+								<executable>docker</executable>
+								<workingDirectory>..</workingDirectory>
+								<arguments>
+									<argument>rmi</argument>
+									<argument>docker-repo.srv.vocento.in/nginx-phpfpm/${project.artifactId}:${project.version}</argument>
+								</arguments>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>

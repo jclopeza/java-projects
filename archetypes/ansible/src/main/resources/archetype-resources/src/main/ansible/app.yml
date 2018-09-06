@@ -1,0 +1,32 @@
+---
+
+#[[#########################################################################
+# INICIO DEL PLAYBOOK
+#########################################################################]]#
+
+#[[#########################################################################
+# 1.- OBTENCION DE LAS URLS DE LOS DISTINTOS ARTEFACTOS
+#########################################################################]]#
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: Obtenemos las urls de los distintos artefactos
+    uri:
+      url: "https://pds.srv.vocento.in/api/get-artifacts-versions/{{ application }}/{{ version }}/"
+      return_content: yes
+    register: artifacts
+
+#[[#########################################################################
+# 2.- DESPLIEGUE DE LOS ARTEFACTOS A LAS MÁQUINAS REMOTAS
+#########################################################################]]#
+- hosts: "{{ entorno }}:&${technology-type}:&${application}"
+  roles:
+    - { role: deploy-artifact-${artifact-id} }
+
+#[[#########################################################################
+# 3.- ACTUALIZACION DEL NIVEL DE MADUREZ
+#########################################################################]]#
+- hosts: localhost
+  connection: local
+  roles:
+    - { role: update-maturity-level }

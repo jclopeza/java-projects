@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>vocento.nginx-phpfpm</groupId>
+	<artifactId>${artifactId}</artifactId>
+	<version>${version}</version>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>vocento.devops.parent</groupId>
+		<artifactId>nginx-phpfpm</artifactId>
+		<version>LATEST</version>
+	</parent>
+
+	<properties>
+		<base-nginx-phpfpm>docker-repo.srv.vocento.in/vocbase/base-nginx-phpfpm:latest</base-nginx-phpfpm>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>vocento.devops.plugins</groupId>
+			<artifactId>sonar-break-maven-plugin</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+			</plugin>
+			<!--
+			<plugin>
+				<groupId>vocento.devops.plugins</groupId>
+				<artifactId>sonar-break-maven-plugin</artifactId>
+			</plugin>
+			-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

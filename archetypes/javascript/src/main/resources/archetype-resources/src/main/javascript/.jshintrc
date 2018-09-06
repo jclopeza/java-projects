@@ -1,0 +1,14 @@
+{
+  "predef": [
+    "describe",
+    "it",
+    "after",
+    "afterEach",
+    "before",
+    "beforeEach"
+  ],
+  "node": true,
+  "esversion": 6,
+  "esnext": true,
+  "expr": true
+}
